@@ -45,7 +45,7 @@ public class RNReceivedMessageHandler {
         // data has it
         if (remoteNotification != null) {
             // ^ It's null when message is from GCM
-            RNPushNotificationConfig config = new RNPushNotificationConfig(mFirebaseMessagingService.getApplication());  
+            RNPushNotificationConfig config = new RNPushNotificationConfig(mFirebaseMessagingService.getApplication());
 
             String title = getLocalizedString(remoteNotification.getTitle(), remoteNotification.getTitleLocalizationKey(), remoteNotification.getTitleLocalizationArgs());
             String body = getLocalizedString(remoteNotification.getBody(), remoteNotification.getBodyLocalizationKey(), remoteNotification.getBodyLocalizationArgs());
@@ -55,7 +55,7 @@ public class RNReceivedMessageHandler {
             bundle.putString("sound", remoteNotification.getSound());
             bundle.putString("color", remoteNotification.getColor());
             bundle.putString("tag", remoteNotification.getTag());
-            
+
             if(remoteNotification.getChannelId() != null) {
               bundle.putString("channelId", remoteNotification.getChannelId());
             }
@@ -76,12 +76,12 @@ public class RNReceivedMessageHandler {
                         break;
                 }
             }
-          
+
             bundle.putString("visibility", visibilityString);
 
             Integer priority = remoteNotification.getNotificationPriority();
             String priorityString = "high";
-            
+
             if (priority != null) {
               switch (priority) {
                   case NotificationCompat.PRIORITY_MAX:
@@ -105,7 +105,7 @@ public class RNReceivedMessageHandler {
 
             if(uri != null) {
                 String imageUrl = uri.toString();
-              
+
                 bundle.putString("bigPictureUrl", imageUrl);
                 bundle.putString("largeIconUrl", imageUrl);
             }
@@ -113,7 +113,7 @@ public class RNReceivedMessageHandler {
 
         Bundle dataBundle = new Bundle();
         Map<String, String> notificationData = message.getData();
-        
+
         for(Map.Entry<String, String> entry : notificationData.entrySet()) {
             dataBundle.putString(entry.getKey(), entry.getValue());
         }
@@ -161,7 +161,7 @@ public class RNReceivedMessageHandler {
 
         Application applicationContext = (Application) context.getApplicationContext();
 
-        RNPushNotificationConfig config = new RNPushNotificationConfig(mFirebaseMessagingService.getApplication());  
+        RNPushNotificationConfig config = new RNPushNotificationConfig(mFirebaseMessagingService.getApplication());
         RNPushNotificationHelper pushNotificationHelper = new RNPushNotificationHelper(applicationContext);
 
         boolean isForeground = pushNotificationHelper.isApplicationInForeground();
@@ -178,7 +178,12 @@ public class RNReceivedMessageHandler {
 
         if (config.getNotificationForeground() || !isForeground) {
             Log.v(LOG_TAG, "sendNotification: " + bundle);
-
+            Bundle bundle = notificationAttributes.toBundle();
+            bundle.putString("actions", "[\"ReplyInput\"]");
+            bundle.putString("reply_placeholder_text", "Write your response...");
+            bundle.putString("reply_button_text", "Reply");
+            bundle.putBoolean("invokeApp", true);
+            bundle.putBoolean("localNotification", true);
             pushNotificationHelper.sendToNotificationCentre(bundle);
         }
     }

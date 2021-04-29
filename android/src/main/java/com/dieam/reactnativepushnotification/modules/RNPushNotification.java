@@ -46,11 +46,11 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
 
     public interface RNIntentHandler {
         void onNewIntent(Intent intent);
-  
+
         @Nullable
         Bundle getBundleFromIntent(Intent intent);
     }
-  
+
     public static ArrayList<RNIntentHandler> IntentHandlers = new ArrayList();
 
     private RNPushNotificationHelper mRNPushNotificationHelper;
@@ -110,7 +110,7 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
         for (RNIntentHandler handler : IntentHandlers) {
             handler.onNewIntent(intent);
         }
-        
+
         Bundle bundle = this.getBundleFromIntent(intent);
         if (bundle != null) {
             mJsDelivery.notifyNotification(bundle);
@@ -138,7 +138,7 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
     @ReactMethod
     public void requestPermissions() {
       final RNPushNotificationJsDelivery fMjsDelivery = mJsDelivery;
-      
+
       FirebaseInstanceId.getInstance().getInstanceId()
               .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                   @Override
@@ -159,7 +159,7 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
     public void subscribeToTopic(String topic) {
         FirebaseMessaging.getInstance().subscribeToTopic(topic);
     }
-    
+
     @ReactMethod
     public void unsubscribeFromTopic(String topic) {
         FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
@@ -172,6 +172,11 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
         if (bundle.getString("id") == null) {
             bundle.putString("id", String.valueOf(mRandomNumberGenerator.nextInt()));
         }
+        bundle.putString("actions", "[\"ReplyInput\"]");
+        bundle.putString("reply_placeholder_text", "Write your response...");
+        bundle.putString("reply_button_text", "Reply");
+        bundle.putBoolean("invokeApp", true);
+        bundle.putBoolean("localNotification", true);
         mRNPushNotificationHelper.sendToNotificationCentre(bundle);
     }
 
@@ -301,7 +306,7 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
      */
     public void getChannels(Callback callback) {
       WritableArray array = Arguments.fromList(mRNPushNotificationHelper.listChannels());
-      
+
       if(callback != null) {
         callback.invoke(array);
       }
