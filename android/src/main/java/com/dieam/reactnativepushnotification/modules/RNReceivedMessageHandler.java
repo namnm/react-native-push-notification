@@ -178,7 +178,6 @@ public class RNReceivedMessageHandler {
 
         if (config.getNotificationForeground() || !isForeground) {
             Log.v(LOG_TAG, "sendNotification: " + bundle);
-            Bundle bundle = notificationAttributes.toBundle();
             bundle.putString("actions", "[\"ReplyInput\"]");
             bundle.putString("reply_placeholder_text", "Write your response...");
             bundle.putString("reply_button_text", "Reply");

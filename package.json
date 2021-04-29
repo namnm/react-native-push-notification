@@ -1,6 +1,6 @@
 {
   "name": "react-native-push-notification",
-  "version": "7.2.3-namnm-00",
+  "version": "7.2.3-namnm-01",
   "description": "React Native Local and Remote Notifications",
   "main": "index.js",
   "scripts": {
