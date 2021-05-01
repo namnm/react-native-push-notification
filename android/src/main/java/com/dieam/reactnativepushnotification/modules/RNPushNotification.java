@@ -176,10 +176,10 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
             bundle.putString("actions", "[\"ReplyInput\"]");
             bundle.putString("reply_placeholder_text", "Write your response...");
             bundle.putString("reply_button_text", "Reply");
-            bundle.putBoolean("invokeApp", true);
-            bundle.putBoolean("localNotification", true);
-            mRNPushNotificationHelper.sendToNotificationCentre(bundle);
         }
+        bundle.putBoolean("invokeApp", true);
+        bundle.putBoolean("localNotification", true);
+        mRNPushNotificationHelper.sendToNotificationCentre(bundle);
     }
 
     @ReactMethod

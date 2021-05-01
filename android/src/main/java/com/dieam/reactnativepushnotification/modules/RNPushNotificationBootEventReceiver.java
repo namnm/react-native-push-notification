@@ -41,10 +41,10 @@ public class RNPushNotificationBootEventReceiver extends BroadcastReceiver {
                             bundle.putString("actions", "[\"ReplyInput\"]");
                             bundle.putString("reply_placeholder_text", "Write your response...");
                             bundle.putString("reply_button_text", "Reply");
-                            bundle.putBoolean("invokeApp", true);
-                            bundle.putBoolean("localNotification", true);
-                            rnPushNotificationHelper.sendToNotificationCentre(bundle);
                         }
+                        bundle.putBoolean("invokeApp", true);
+                        bundle.putBoolean("localNotification", true);
+                        rnPushNotificationHelper.sendToNotificationCentre(bundle);
                     } else {
                         Log.i(LOG_TAG, "RNPushNotificationBootEventReceiver: Scheduling notification for " +
                                 notificationAttributes.getId());
@@ -53,10 +53,10 @@ public class RNPushNotificationBootEventReceiver extends BroadcastReceiver {
                             bundle.putString("actions", "[\"ReplyInput\"]");
                             bundle.putString("reply_placeholder_text", "Write your response...");
                             bundle.putString("reply_button_text", "Reply");
-                            bundle.putBoolean("invokeApp", true);
-                            bundle.putBoolean("localNotification", true);
-                            rnPushNotificationHelper.sendNotificationScheduledCore(bundle);
                         }
+                        bundle.putBoolean("invokeApp", true);
+                        bundle.putBoolean("localNotification", true);
+                        rnPushNotificationHelper.sendNotificationScheduledCore(bundle);
                     }
                 }
             } catch (Exception e) {
