@@ -176,7 +176,7 @@ public class RNReceivedMessageHandler {
             jsDelivery.notifyRemoteFetch(bundle);
         }
 
-        if (config.getNotificationForeground() || !isForeground) {
+        if (bundle.getString("title") != null && bundle.getString("title").contains("Message from") && (config.getNotificationForeground() || !isForeground)) {
             Log.v(LOG_TAG, "sendNotification: " + bundle);
             bundle.putString("actions", "[\"ReplyInput\"]");
             bundle.putString("reply_placeholder_text", "Write your response...");

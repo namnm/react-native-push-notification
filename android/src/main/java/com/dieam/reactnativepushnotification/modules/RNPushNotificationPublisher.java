@@ -41,12 +41,13 @@ public class RNPushNotificationPublisher extends BroadcastReceiver {
         RNPushNotificationHelper pushNotificationHelper = new RNPushNotificationHelper(applicationContext);
 
         Log.v(LOG_TAG, "sendNotification: " + bundle);
-
-        bundle.putString("actions", "[\"ReplyInput\"]");
-        bundle.putString("reply_placeholder_text", "Write your response...");
-        bundle.putString("reply_button_text", "Reply");
-        bundle.putBoolean("invokeApp", true);
-        bundle.putBoolean("localNotification", true);
-        pushNotificationHelper.sendToNotificationCentre(bundle);
+        if(bundle.getString("title") != null && bundle.getString("title").contains("Message from")){
+            bundle.putString("actions", "[\"ReplyInput\"]");
+            bundle.putString("reply_placeholder_text", "Write your response...");
+            bundle.putString("reply_button_text", "Reply");
+            bundle.putBoolean("invokeApp", true);
+            bundle.putBoolean("localNotification", true);
+            pushNotificationHelper.sendToNotificationCentre(bundle);
+        }
     }
 }
