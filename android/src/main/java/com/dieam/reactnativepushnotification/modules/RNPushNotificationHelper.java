@@ -206,10 +206,23 @@ public class RNPushNotificationHelper {
                 return;
             }
 
+            Bundle data = bundle.getBundle("data");
+            if (data != null) {
+                if (bundle.getString("title") == null) {
+                    bundle.putString("title", data.getString("title"));
+                }
+                if (bundle.getString("message") == null) {
+                    bundle.putString("message", data.getString("message"));
+                }
+                if (bundle.getString("message") == null) {
+                    bundle.putString("message", data.getString("body"));
+                }
+            }
+
             if (bundle.getString("message") == null) {
                 // this happens when a 'data' notification is received - we do not synthesize a local notification in this case
                 Log.d(LOG_TAG, "Ignore this message if you sent data-only notification. Cannot send to notification centre because there is no 'message' field in: " + bundle);
-                return;
+                // return;
             }
 
             String notificationIdString = bundle.getString("id");
@@ -270,13 +283,13 @@ public class RNPushNotificationHelper {
                         visibility = NotificationCompat.VISIBILITY_PRIVATE;
                 }
             }
-            
+
             String channel_id = bundle.getString("channelId");
 
             if(channel_id == null) {
                 channel_id = this.config.getNotificationDefaultChannelId();
             }
-            
+
             NotificationCompat.Builder notification = new NotificationCompat.Builder(context, channel_id)
                     .setContentTitle(title)
                     .setTicker(bundle.getString("ticker"))
@@ -284,7 +297,7 @@ public class RNPushNotificationHelper {
                     .setPriority(priority)
                     .setAutoCancel(bundle.getBoolean("autoCancel", true))
                     .setOnlyAlertOnce(bundle.getBoolean("onlyAlertOnce", false));
-            
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // API 24 and higher
                 // Restore showing timestamp on Android 7+
                 // Source: https://developer.android.com/reference/android/app/Notification.Builder.html#setShowWhen(boolean)
@@ -297,7 +310,7 @@ public class RNPushNotificationHelper {
                 // Changing Default mode of notification
                 notification.setDefaults(Notification.DEFAULT_LIGHTS);
             }
-      
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) { // API 20 and higher
               String group = bundle.getString("group");
 
@@ -360,7 +373,7 @@ public class RNPushNotificationHelper {
                     largeIconBitmap = BitmapFactory.decodeResource(res, largeIconResId);
                 }
             }
-            
+
             if (largeIconBitmap != null){
               notification.setLargeIcon(largeIconBitmap);
             }
@@ -374,7 +387,7 @@ public class RNPushNotificationHelper {
             if (subText != null) {
                 notification.setSubText(subText);
             }
- 
+
             String bigText = bundle.getString("bigText");
 
             if (bigText == null) {
@@ -469,32 +482,32 @@ public class RNPushNotificationHelper {
 
                 vibratePattern = new long[]{0, vibration};
 
-                notification.setVibrate(vibratePattern); 
+                notification.setVibrate(vibratePattern);
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
               // Define the shortcutId
               String shortcutId = bundle.getString("shortcutId");
-              
+
               if (shortcutId != null) {
                 notification.setShortcutId(shortcutId);
               }
- 
+
               Long timeoutAfter = (long) bundle.getDouble("timeoutAfter");
-  
+
               if (timeoutAfter != null && timeoutAfter >= 0) {
                 notification.setTimeoutAfter(timeoutAfter);
               }
             }
 
             Long when = (long) bundle.getDouble("when");
-  
+
             if (when != null && when >= 0) {
               notification.setWhen(when);
             }
 
             notification.setUsesChronometer(bundle.getBoolean("usesChronometer", false));
-                
+
             notification.setChannelId(channel_id);
             notification.setContentIntent(pendingIntent);
 
@@ -724,7 +737,7 @@ public class RNPushNotificationHelper {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public WritableArray getDeliveredNotifications() {
       WritableArray result = Arguments.createArray();
-  
+
       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
         return result;
       }
@@ -842,10 +855,10 @@ public class RNPushNotificationHelper {
 
     public List<String> listChannels() {
       List<String> channels = new ArrayList<>();
-      
+
       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
           return channels;
-      
+
       NotificationManager manager = notificationManager();
 
       if (manager == null)
@@ -863,7 +876,7 @@ public class RNPushNotificationHelper {
     public boolean channelBlocked(String channel_id) {
       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
           return false;
-      
+
       NotificationManager manager = notificationManager();
 
       if (manager == null)
@@ -880,7 +893,7 @@ public class RNPushNotificationHelper {
     public boolean channelExists(String channel_id) {
       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
           return false;
-      
+
       NotificationManager manager = notificationManager();
 
       if (manager == null)
@@ -894,7 +907,7 @@ public class RNPushNotificationHelper {
     public void deleteChannel(String channel_id) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
             return;
-        
+
         NotificationManager manager = notificationManager();
 
         if (manager == null)
@@ -966,7 +979,7 @@ public class RNPushNotificationHelper {
 
         return checkOrCreateChannel(manager, channelId, channelName, channelDescription, soundUri, importance, vibratePattern);
     }
-    
+
     public boolean isApplicationInForeground() {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningAppProcessInfo> processInfos = activityManager.getRunningAppProcesses();

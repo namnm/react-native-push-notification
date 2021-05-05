@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 
 import java.util.Set;
@@ -35,11 +36,23 @@ public class RNPushNotificationBootEventReceiver extends BroadcastReceiver {
                     if (notificationAttributes.getFireDate() < System.currentTimeMillis()) {
                         Log.i(LOG_TAG, "RNPushNotificationBootEventReceiver: Showing notification for " +
                                 notificationAttributes.getId());
-                        rnPushNotificationHelper.sendToNotificationCentre(notificationAttributes.toBundle());
+                        Bundle bundle = notificationAttributes.toBundle();
+                        bundle.putString("actions", "[\"ReplyInput\"]");
+                        bundle.putString("reply_placeholder_text", "Write your response...");
+                        bundle.putString("reply_button_text", "Reply");
+                        bundle.putBoolean("invokeApp", true);
+                        bundle.putBoolean("localNotification", true);
+                        rnPushNotificationHelper.sendToNotificationCentre(bundle);
                     } else {
                         Log.i(LOG_TAG, "RNPushNotificationBootEventReceiver: Scheduling notification for " +
                                 notificationAttributes.getId());
-                        rnPushNotificationHelper.sendNotificationScheduledCore(notificationAttributes.toBundle());
+                        Bundle bundle = notificationAttributes.toBundle();
+                        bundle.putString("actions", "[\"ReplyInput\"]");
+                        bundle.putString("reply_placeholder_text", "Write your response...");
+                        bundle.putString("reply_button_text", "Reply");
+                        bundle.putBoolean("invokeApp", true);
+                        bundle.putBoolean("localNotification", true);
+                        rnPushNotificationHelper.sendNotificationScheduledCore(bundle);
                     }
                 }
             } catch (Exception e) {
