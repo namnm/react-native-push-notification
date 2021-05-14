@@ -14,19 +14,7 @@ Check out for changes and migration in the CHANGELOG:
 
 # Supporting the project
 
-Maintaining this project takes time. To help allocate time, you can Buy Me a Coffee :wink:
-
-<a href="https://www.buymeacoffee.com/Dallas62" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-blue.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
-
-## Supported React Native Versions
-
-| Component Version | RN Versions          | README                                                                                                                 |
-| ----------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| **1.0.7**         | **<= 0.27**          | [Open](https://github.com/zo0r/react-native-push-notification/blob/f42723817f1687e0da23e6753eb8a9f0385b6ac5/README.md) |
-| **1.0.8**         | **0.28**             | [Open](https://github.com/zo0r/react-native-push-notification/blob/2eafd1961273ca6a82ad4dd6514fbf1d1a829089/README.md) |
-| **2.0.1**         | **0.29**             | [Open](https://github.com/zo0r/react-native-push-notification/blob/c7ab7cd84ea19e42047379aefaf568bb16a81936/README.md) |
-| **2.0.2**         | **0.30, 0.31, 0.32** | [Open](https://github.com/zo0r/react-native-push-notification/blob/a0f7d44e904ba0b92933518e5bf6b444f1c90abb/README.md) |
-| **>= 2.1.0**      | **>= 0.33**          | [Open](https://github.com/zo0r/react-native-push-notification/blob/a359e5c00954aa324136eaa9808333d6ca246171/README.md) |
+Maintainers are welcome ! Feel free to contact me :wink:
 
 ## Changelog
 
@@ -67,7 +55,7 @@ In your `android/build.gradle`
 ```gradle
 ext {
     googlePlayServicesVersion = "<Your play services version>" // default: "+"
-    firebaseMessagingVersion = "<Your Firebase version>" // default: "+"
+    firebaseMessagingVersion = "<Your Firebase version>" // default: "21.1.0"
 
     // Other settings
     compileSdkVersion = <Your compile SDK version> // default: 23
@@ -403,6 +391,8 @@ In the location notification json specify the full file name:
 To use channels, create them at startup and pass the matching `channelId` through to `PushNotification.localNotification` or `PushNotification.localNotificationSchedule`.
 
 ```javascript
+import PushNotification, {Importance} from 'react-native-push-notification';
+...
   PushNotification.createChannel(
     {
       channelId: "channel-id", // (required)
@@ -410,7 +400,7 @@ To use channels, create them at startup and pass the matching `channelId` throug
       channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
       playSound: false, // (optional) default: true
       soundName: "default", // (optional) See `soundName` parameter of `localNotification` function
-      importance: 4, // (optional) default: 4. Int value of the Android notification importance
+      importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
       vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
     },
     (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
@@ -590,10 +580,10 @@ Returns an array of local scheduled notification objects containing:
 
 Available options:
 
-"max" = NotficationCompat.PRIORITY_MAX
-"high" = NotficationCompat.PRIORITY_HIGH
-"low" = NotficationCompat.PRIORITY_LOW
-"min" = NotficationCompat.PRIORITY_MIN
+"max" = NotficationCompat.PRIORITY_MAX\
+"high" = NotficationCompat.PRIORITY_HIGH\
+"low" = NotficationCompat.PRIORITY_LOW\
+"min" = NotficationCompat.PRIORITY_MIN\
 "default" = NotficationCompat.PRIORITY_DEFAULT
 
 More information: https://developer.android.com/reference/android/app/Notification.html#PRIORITY_DEFAULT
@@ -604,25 +594,25 @@ More information: https://developer.android.com/reference/android/app/Notificati
 
 Available options:
 
-"private" = NotficationCompat.VISIBILITY_PRIVATE
-"public" = NotficationCompat.VISIBILITY_PUBLIC
-"secret" = NotficationCompat.VISIBILITY_SECRET
+"private" = NotficationCompat.VISIBILITY_PRIVATE\
+"public" = NotficationCompat.VISIBILITY_PUBLIC\
+"secret" = NotficationCompat.VISIBILITY_SECRET 
 
 More information: https://developer.android.com/reference/android/app/Notification.html#VISIBILITY_PRIVATE
 
 ## Notification importance
 
-(optional) Specify `importance` to set importance of notification. Default value: "high"
+(optional) Specify `importance` to set importance of notification. Default value: Importance.HIGH  
+Constants available on the `Importance` object. `import PushNotification, {Importance} from 'react-native-push-notification';`
 
 Available options:
 
-"default" = NotificationManager.IMPORTANCE_DEFAULT
-"max" = NotificationManager.IMPORTANCE_MAX
-"high" = NotificationManager.IMPORTANCE_HIGH
-"low" = NotificationManager.IMPORTANCE_LOW
-"min" = NotificationManager.IMPORTANCE_MIN
-"none" = NotificationManager.IMPORTANCE_NONE
-"unspecified" = NotificationManager.IMPORTANCE_UNSPECIFIED
+Importance.DEFAULT = NotificationManager.IMPORTANCE_DEFAULT\
+Importance.HIGH = NotificationManager.IMPORTANCE_HIGH\
+Importance.LOW = NotificationManager.IMPORTANCE_LOW\
+Importance.MIN = NotificationManager.IMPORTANCE_MIN\
+Importance.NONE= NotificationManager.IMPORTANCE_NONE\
+Importance.UNSPECIFIED = NotificationManager.IMPORTANCE_UNSPECIFIED
 
 More information: https://developer.android.com/reference/android/app/NotificationManager#IMPORTANCE_DEFAULT
 

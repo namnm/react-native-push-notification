@@ -141,7 +141,7 @@ Notifications.unregister = function() {
  * @param {Object}    details.userInfo -  iOS ONLY: The userInfo used in the notification alert.
  */
 Notifications.localNotification = function({...details}) {
-  if ('android' === Platform.os && details && !details.channelId) {
+  if ('android' === Platform.OS && details && !details.channelId) {
     console.warn('No channel id passed, notifications may not work.');
   }
 
@@ -603,5 +603,15 @@ Notifications.deleteChannel = function() {
 Notifications.setNotificationCategories = function() {
   return this.callNative('setNotificationCategories', arguments);
 }
+
+// https://developer.android.com/reference/android/app/NotificationManager#IMPORTANCE_DEFAULT
+Notifications.Importance = Object.freeze({
+  DEFAULT: 3,
+  HIGH: 4,
+  LOW: 2,
+  MIN: 1,
+  NONE: 0,
+  UNSPECIFIED: -1000,
+});
 
 module.exports = Notifications;
